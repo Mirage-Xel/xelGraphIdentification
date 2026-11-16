@@ -28,7 +28,7 @@ public class GraphIdentificationScript : MonoBehaviour {
     new List<List<int>> { new List<int> { 9, 1, 7 }, new List<int> { 0, 2, 5 }, new List<int> { 1, 3, 9 }, new List<int> { 2, 4, 8 }, new List<int> { 3, 5, 6 },
     new List<int> { 4, 6, 1 }, new List<int> { 5, 7, 4 }, new List<int> { 6, 8, 0 }, new List<int> { 7, 9, 3 }, new List<int> { 8, 0, 2 } },
     new List<List<int>> { new List<int> { 9, 1, 5 }, new List<int> { 0, 2, 6 }, new List<int> { 1, 3, 4 }, new List<int> { 2, 4, 8 }, new List<int> { 3, 5, 2 },
-    new List<int> { 4, 6, 0 }, new List<int> { 5, 7, 2 }, new List<int> { 6, 8, 9 }, new List<int> { 7, 9, 3 }, new List<int> { 8, 0, 7 } },
+    new List<int> { 4, 6, 0 }, new List<int> { 5, 7, 1 }, new List<int> { 6, 8, 9 }, new List<int> { 7, 9, 3 }, new List<int> { 8, 0, 7 } },
     new List<List<int>> { new List<int> { 9, 1, 6 }, new List<int> { 0, 2, 5 }, new List<int> { 1, 3, 4 }, new List<int> { 2, 4, 8 }, new List<int> { 3, 5, 2 },
     new List<int> { 4, 6, 1 }, new List<int> { 5, 7, 0 }, new List<int> { 6, 8, 9 }, new List<int> { 7, 9, 3 }, new List<int> { 8, 0, 7 }  },
     new List<List<int>> { new List<int> { 9, 1, 6 }, new List<int> { 0, 2, 9 }, new List<int> { 1, 3, 4 }, new List<int> { 2, 4, 8 }, new List<int> { 3, 5, 2 },
@@ -87,8 +87,8 @@ public class GraphIdentificationScript : MonoBehaviour {
         _labels = "abcdefghij".ToList().Shuffle().Join("");
         _curVertex = UnityEngine.Random.Range(0, 10);
         UpdateLabels();
-       Debug.LogFormat("[Graph Identfication #{0}] The graph on the module is Graph {1}.", loggingId, _potentialGraphIndices[_answer] + 1);
-       Debug.LogFormat("[Graph Identfication #{0}] Clockwise from top left, the vertices are labeled {1}.", loggingId, _labels.ToUpperInvariant());
+       Debug.LogFormat("[Graph Identification #{0}] The graph on the module is Graph {1}.", loggingId, _potentialGraphIndices[_answer] + 1);
+       Debug.LogFormat("[Graph Identification #{0}] Clockwise from top left, the vertices are labeled {1}.", loggingId, _labels.ToUpperInvariant());
     }
 
     void UpdateLabels()
@@ -120,16 +120,16 @@ public class GraphIdentificationScript : MonoBehaviour {
                 return false;
             AudioHook.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, transform);
             SubmissionButtons[button].AddInteractionPunch(0.5f);
-            Debug.LogFormat("[Graph Identfication #{0}] You submitted Graph {1}.", loggingId, _potentialGraphIndices[button] + 1);
+            Debug.LogFormat("[Graph Identification #{0}] You submitted Graph {1}.", loggingId, _potentialGraphIndices[button] + 1);
             if (button != _answer)
             {
-                Debug.LogFormat("[Graph Identfication #{0}] That was incorrect. Strike!", loggingId);
+                Debug.LogFormat("[Graph Identification #{0}] That was incorrect. Strike!", loggingId);
                 BombHook.HandleStrike();
                 return false;
             }
-            Debug.LogFormat("[Graph Identfication #{0}] That was correct. Module solved.", loggingId);
+            Debug.LogFormat("[Graph Identification #{0}] That was correct. Module solved.", loggingId);
             BombHook.HandlePass();
-            AudioHook.PlaySoundAtTransform("Solve", transform);
+            AudioHook.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.CorrectChime, transform);
             _labels = "          ";
             UpdateLabels();
             for (int i = 0; i < 5; i++)
@@ -192,7 +192,7 @@ public class GraphIdentificationScript : MonoBehaviour {
             }       
         }
     }
-    IEnumerator TwitchHandleForcedSolve()
+    IEnumerator HandleTwitchForcedSolve()
     {
         yield return null;
         SubmissionButtons[_answer].OnInteract();
